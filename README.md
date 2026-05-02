@@ -35,7 +35,7 @@ text
 
 1. **Cloner le dépôt**  
    ```bash
-   git clone https://github.com/nom-utilisateur/nom-repo.git
+   git clone https://github.com/HosniNheri1/Supervision_Reseau_PowerBI.git
 Ouvrir le projet Power BI
 Double‑cliquer sur Graphe-PowerBI.pbip (Power BI Desktop requis).
 
@@ -44,15 +44,38 @@ Lancer le script Python (pour la simulation live)
 bash
 python supervision_simulator.py
 Actualiser le dashboard dans Power BI (bouton Actualiser).
-
-📌 Pour aller plus loin
-Remplacer la simulation Python par une vraie ingestion en continu (API, WebSocket, Kafka).
-
-Publier le rapport sur Power BI Service avec actualisation automatique.
-
-Ajouter des alertes par e‑mail via Power Automate.
+👤 Auteur
+Hosni Nheri – GitHub
+Projet réalisé dans le cadre du module Réseaux Mobiles sous l’encadrement de Madame Imen Sfaihi.
 
 🙏 Remerciements
-Projet réalisé dans le cadre du module Réseaux Mobiles de Madame Imen Sfaihi – données fournies par l’ARCEP (data.arcep.fr).
+Données fournies par l’ARCEP (data.arcep.fr) – licence Open Data.
+
+📄 Licence
+Ce projet est distribué sous la licence MIT.
+Vous pouvez librement utiliser, modifier et distribuer ce code à des fins personnelles ou commerciales, sous réserve de conserver la mention de l’auteur original.
+
+text
+MIT License
+
+Copyright (c) 2025 Hosni Nheri
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ⭐ Un dashboard simple, open source, et entièrement basé sur des données publiques.
-./https://github.com/HosniNheri1/Supervision_Reseau_PowerBI/blob/main/dashboard.png
+📸 Aperçu du dashboard :https://github.com/HosniNheri1/Supervision_Reseau_PowerBI/blob/main/dashboard.png
