@@ -55,7 +55,4 @@ Ajouter des alertes par e‑mail via Power Automate.
 🙏 Remerciements
 Projet réalisé dans le cadre du module Réseaux Mobiles de Madame Imen Sfaihi – données fournies par l’ARCEP (data.arcep.fr).
 ⭐ Un dashboard simple, open source, et entièrement basé sur des données publiques.
-
-text
-
-Tu peux aussi **rajouter une capture d’écran** de ton dashboard en enregistrant une image dans le dépôt (ex: `dashboard.png`) puis en l’affichant avec `![Dashboard](./dashboard.png)`.
+./https://github.com/HosniNheri1/Supervision_Reseau_PowerBI/blob/main/dashboard.png
