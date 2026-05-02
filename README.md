@@ -44,8 +44,11 @@ Lancer le script Python (pour la simulation live)
 bash
 python supervision_simulator.py
 Actualiser le dashboard dans Power BI (bouton Actualiser).
+
 👤 Auteur
+
 Hosni Nheri – GitHub
+
 Projet réalisé dans le cadre du module Réseaux Mobiles sous l’encadrement de Madame Imen Sfaihi.
 
 🙏 Remerciements
