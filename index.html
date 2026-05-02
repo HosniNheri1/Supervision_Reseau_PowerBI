@@ -1,10 +1,384 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Dashboard Supervision Réseau</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supervision Réseau Mobile 2G→5G | Dashboard Power BI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* Typographie */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      border-left: 5px solid #028090;
+      padding-left: 1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    header {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #028090;
+      text-decoration: none;
+    }
+
+    nav a {
+      color: #1e293b;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #028090;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(120deg, #eef2ff 0%, #ffffff 100%);
+      padding: 3rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-text {
+      flex: 1.2;
+    }
+
+    .hero-badge {
+      background: #02809020;
+      color: #028090;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .hero-buttons {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.8rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #028090;
+      color: white;
+      box-shadow: 0 2px 6px rgba(2,128,144,0.3);
+    }
+
+    .btn-primary:hover {
+      background: #026b78;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border: 1.5px solid #028090;
+      color: #028090;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background: #02809010;
+    }
+
+    /* Dashboard image */
+    .dashboard-preview {
+      flex: 1;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .dashboard-preview img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .dashboard-preview:hover {
+      transform: scale(1.01);
+    }
+
+    /* Sections */
+    .section {
+      padding: 3rem 0;
+    }
+
+    .section-alt {
+      background: white;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #eef2ff;
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      border-color: #02809030;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .tech-badge {
+      background: #eef2ff;
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #1e3a8a;
+    }
+
+    .kpi-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .kpi-list li {
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .kpi-list li::before {
+      content: "✅";
+    }
+
+    footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: #94a3b8;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.8rem; }
+      .hero-content { flex-direction: column; }
+      nav a { margin-left: 1rem; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Mon Dashboard Supervison</h1>
-    <!-- Collez le code d'intégration iframe provenant de Power BI juste ici -->
+
+<header>
+  <div class="container header-inner">
+    <a href="#" class="logo">📡 ResoNet<span style="color:#0f172a;">Monitor</span></a>
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#fonctionnalites">Fonctions</a>
+      <a href="#tech">Stack</a>
+      <a href="https://github.com/HosniNheri1/Supervision_Reseau_PowerBI" target="_blank">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-text">
+      <div class="hero-badge">📊 Projet Data · Réseaux Mobiles</div>
+      <h1>Supervision unifiée <br>2G → 3G → 4G → 5G</h1>
+      <p>Dashboard interactif temps réel (simulé) construit avec <strong>Python</strong>, <strong>Power BI</strong> et les données officielles de l'<strong>ARCEP</strong>. Comparaison des performances par technologie et par opérateur, alertes visuelles automatiques.</p>
+      <div class="hero-buttons">
+        <a href="#dashboard" class="btn btn-primary">Voir le dashboard</a>
+        <a href="https://github.com/HosniNheri1/Supervision_Reseau_PowerBI" class="btn btn-outline" target="_blank">Code source</a>
+      </div>
+    </div>
+    <div class="dashboard-preview" id="dashboard">
+      <!-- Remplacez 'dashboard.png' par le vrai nom de votre capture d'écran dans le dépôt -->
+      <img src="dashboard.png" alt="Aperçu du dashboard Power BI">
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="fonctionnalites">
+  <div class="container">
+    <h2>🎯 Fonctionnalités clés</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>📱 Multi‑technologie</h3>
+        <p>Supervision unifiée des générations 2G, 3G, 4G et 5G. Filtres dynamiques par technologie et par opérateur (Orange, Free, Bouygues, SFR).</p>
+      </div>
+      <div class="card">
+        <h3>⚠️ Alertes automatiques</h3>
+        <p>Seuils configurables sur le débit descendant : alerte rouge si performances sous la norme attendue pour la technologie.</p>
+      </div>
+      <div class="card">
+        <h3>📈 KPIs avancés</h3>
+        <p>Débit moyen (Mbps), latence (ms), taux d’alerte – calculés dynamiquement via des mesures DAX.</p>
+      </div>
+      <div class="card">
+        <h3>🔄 Simulation temps réel</h3>
+        <p>Script Python injecte une nouvelle mesure toutes les 30 secondes dans un CSV, actualisable manuellement dans Power BI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tech">
+  <div class="container">
+    <h2>🛠️ Architecture technique</h2>
+    <div class="tech-stack">
+      <span class="tech-badge">🐍 Python (pandas, numpy)</span>
+      <span class="tech-badge">📊 Power BI Desktop</span>
+      <span class="tech-badge">📁 CSV / Dataflows</span>
+      <span class="tech-badge">📡 ARCEP Open Data</span>
+      <span class="tech-badge">⚡ DAX</span>
+      <span class="tech-badge">🐙 GitHub Pages</span>
+    </div>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px,1fr));">
+      <div class="card">
+        <h3>🔹 Nettoyage & fusion</h3>
+        <p>Les 3 fichiers ARCEP (sites, mesures QoS, crowdsourcing Ookla) sont chargés par Python, enrichis avec des métriques cohérentes et fusionnés en un seul CSV.</p>
+      </div>
+      <div class="card">
+        <h3>🔹 Dashboard Power BI</h3>
+        <p>Visuels : jauge de débit en temps réel, courbes d’évolution (une par technologie), tableau des alertes conditionnelles, slicers interactifs.</p>
+      </div>
+      <div class="card">
+        <h3>🔹 Publication web</h3>
+        <p>Ce site statique (GitHub Pages) expose les captures d’écran et la documentation du projet. Une version interactive nécessite une licence Power BI Pro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <h2>📊 Aperçu des KPIs (valeurs typiques)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>📡 Débit descendant</h3>
+        <ul class="kpi-list">
+          <li>2G : 0.1 – 0.3 Mbps</li>
+          <li>3G : 1 – 10 Mbps</li>
+          <li>4G : 10 – 150 Mbps</li>
+          <li>5G : 100 – 500 Mbps</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>⏱️ Latence moyenne</h3>
+        <ul class="kpi-list">
+          <li>2G : 350 – 600 ms</li>
+          <li>3G : 80 – 200 ms</li>
+          <li>4G : 20 – 60 ms</li>
+          <li>5G : 10 – 30 ms</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🚨 Seuil d’alerte</h3>
+        <p>✔️ 4G/5G : débit < 10 Mbps<br>✔️ 2G/3G : débit < 1 Mbps</p>
+        <p>➜ Alerte visuelle rouge dans le tableau et la jauge.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Hosni Nheri — Projet réalisé sous l'encadrement de Mme Imen Sfaihi (module Réseaux Mobiles).</p>
+    <p>📌 Données : <a href="https://data.arcep.fr" target="_blank">ARCEP Open Data</a> | 🔗 <a href="https://github.com/HosniNheri1/Supervision_Reseau_PowerBI" target="_blank">Dépôt GitHub</a></p>
+    <p style="margin-top: 0.8rem;">Licence MIT — libre d’inspiration et de réutilisation avec attribution.</p>
+  </div>
+</footer>
+
 </body>
 </html>
