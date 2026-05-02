@@ -1,0 +1,220 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "e8d2da003e4e79dde887",
+  "position": {
+    "x": 0,
+    "y": 293.65450007537817,
+    "z": 4000,
+    "height": 426.75957721234863,
+    "width": 672.38647213521165,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "supervision"
+                    }
+                  },
+                  "Property": "timestamp"
+                }
+              },
+              "queryRef": "supervision.timestamp",
+              "nativeQueryRef": "timestamp"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "supervision"
+                    }
+                  },
+                  "Property": "technologie"
+                }
+              },
+              "queryRef": "supervision.technologie",
+              "nativeQueryRef": "technologie"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "supervision"
+                    }
+                  },
+                  "Property": "operateur"
+                }
+              },
+              "queryRef": "supervision.operateur",
+              "nativeQueryRef": "operateur"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "supervision"
+                        }
+                      },
+                      "Property": "dl_mbps"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(supervision.dl_mbps)",
+              "nativeQueryRef": "Somme de dl_mbps"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "supervision"
+                        }
+                      },
+                      "Property": "latency_ms"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(supervision.latency_ms)",
+              "nativeQueryRef": "Somme de latency_ms"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "supervision"
+                    }
+                  },
+                  "Property": "alerte"
+                }
+              },
+              "queryRef": "supervision.alerte",
+              "nativeQueryRef": "alerte"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Conditional": {
+                      "Cases": [
+                        {
+                          "Condition": {
+                            "Comparison": {
+                              "ComparisonKind": 0,
+                              "Left": {
+                                "Aggregation": {
+                                  "Expression": {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "supervision"
+                                        }
+                                      },
+                                      "Property": "alerte"
+                                    }
+                                  },
+                                  "Function": 3
+                                }
+                              },
+                              "Right": {
+                                "Literal": {
+                                  "Value": "'Normal'"
+                                }
+                              }
+                            },
+                            "Annotations": {
+                              "PowerBI.SQExprEvaluationKind": 1,
+                              "PowerBI.SQExprTextOperatorOption": 2
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#0DEC3A'"
+                            }
+                          }
+                        },
+                        {
+                          "Condition": {
+                            "Comparison": {
+                              "ComparisonKind": 0,
+                              "Left": {
+                                "Aggregation": {
+                                  "Expression": {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "supervision"
+                                        }
+                                      },
+                                      "Property": "alerte"
+                                    }
+                                  },
+                                  "Function": 3
+                                }
+                              },
+                              "Right": {
+                                "Literal": {
+                                  "Value": "'Alerte debit bas'"
+                                }
+                              }
+                            },
+                            "Annotations": {
+                              "PowerBI.SQExprEvaluationKind": 1,
+                              "PowerBI.SQExprTextOperatorOption": 2
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#D64550'"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "supervision.alerte"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,5 @@
+relationship d103bda4-8231-44e3-a232-4fb1c947feb2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: supervision.timestamp
+	toColumn: LocalDateTable_a964e996-39b2-4204-9fb2-1187ce160c3d.Date
+

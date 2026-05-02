@@ -1,0 +1,112 @@
+table supervision
+	lineageTag: 174fbe91-8a64-4239-b141-3a7b8bcc0a09
+
+	measure 'Débit moyen' = AVERAGE(supervision[dl_mbps])
+		lineageTag: 825e0db5-d34a-4a02-8676-02dabbc752fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Latence moyenne' = AVERAGE(supervision[latency_ms])
+		lineageTag: 3a3064f2-5e91-4459-972f-a5a664e32386
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Taux alerte' = DIVIDE(CALCULATE(COUNTROWS(supervision), supervision[alerte] = "Alerte debit bas"), COUNTROWS(supervision))
+		lineageTag: 75236978-2bae-4515-ae1b-83915229664f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Cible = 100
+		formatString: 0
+		lineageTag: 1b554f15-c333-4f0d-8f06-e68b245b4bdd
+
+	column timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b55b9cad-9eab-4666-bf0b-ed284d0abca3
+		summarizeBy: none
+		sourceColumn: timestamp
+
+		variation Variation
+			isDefault
+			relationship: d103bda4-8231-44e3-a232-4fb1c947feb2
+			defaultHierarchy: LocalDateTable_a964e996-39b2-4204-9fb2-1187ce160c3d.'Hiérarchie de dates'
+
+		annotation SummarizationSetBy = Automatic
+
+	column technologie
+		dataType: string
+		lineageTag: 3d9283c9-ca51-4cd5-a090-0c17fad3e124
+		summarizeBy: none
+		sourceColumn: technologie
+
+		annotation SummarizationSetBy = Automatic
+
+	column operateur
+		dataType: string
+		lineageTag: ae170067-d88e-42e9-afc2-1469f7300158
+		summarizeBy: none
+		sourceColumn: operateur
+
+		annotation SummarizationSetBy = Automatic
+
+	column dl_mbps
+		dataType: double
+		lineageTag: 28b783ef-d47f-4ce9-a276-c8bc6c64738b
+		summarizeBy: sum
+		sourceColumn: dl_mbps
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ul_mbps
+		dataType: double
+		lineageTag: 188a4078-0caa-42de-8273-e71f5f870f99
+		summarizeBy: sum
+		sourceColumn: ul_mbps
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column latency_ms
+		dataType: double
+		lineageTag: cafecc4d-905f-4a27-a596-a8c6644a7e9b
+		summarizeBy: sum
+		sourceColumn: latency_ms
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column packet_loss
+		dataType: double
+		lineageTag: 295777bb-2924-404a-bd2e-e3f608d9409d
+		summarizeBy: sum
+		sourceColumn: packet_loss
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column alerte
+		dataType: string
+		lineageTag: 8c9f8ef7-bf03-4bef-bbac-67d8f0eee168
+		summarizeBy: none
+		sourceColumn: alerte
+
+		annotation SummarizationSetBy = Automatic
+
+	partition supervision = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Projet_Supervision\data\supervision.csv"),[Delimiter=";", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"En-têtes promus" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Type modifié" = Table.TransformColumnTypes(#"En-têtes promus",{{"timestamp", type datetime}, {"technologie", type text}, {"operateur", type text}, {"dl_mbps", type number}, {"ul_mbps", type number}, {"latency_ms", type number}, {"packet_loss", type number}, {"alerte", type text}})
+				in
+				    #"Type modifié"
+
+	annotation PBI_ResultType = Table
+

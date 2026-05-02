@@ -1,0 +1,239 @@
+
+<h2 class="sr-only">Dashboard de supervision réseau 2G/3G/4G/5G - indicateurs en temps réel simulés</h2>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.dash{padding:1rem 0}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px}
+.topbar-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.topbar-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-right:6px;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem}
+.filter-btn{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:12px;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.filter-btn.active{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info);font-weight:500}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem}
+.kpi{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.85rem 1rem}
+.kpi-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.kpi-value{font-size:22px;font-weight:500;color:var(--color-text-primary);line-height:1}
+.kpi-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:4px}
+.kpi-value.danger{color:var(--color-text-danger)}
+.kpi-value.success{color:var(--color-text-success)}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:560px){.charts-row{grid-template-columns:1fr}}
+.chart-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem}
+.chart-card-full{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.chart-title{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:.5rem}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-align:left;padding:6px 10px;border-bottom:0.5px solid var(--color-border-tertiary);text-transform:uppercase;letter-spacing:.04em}
+td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:500}
+.badge-ok{background:var(--color-background-success);color:var(--color-text-success)}
+.badge-alert{background:var(--color-background-danger);color:var(--color-text-danger)}
+.badge-tech{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500}
+.t2g{background:#FAEEDA;color:#633806}
+.t3g{background:#E6F1FB;color:#0C447C}
+.t4g{background:#EAF3DE;color:#27500A}
+.t5g{background:#EEEDFE;color:#3C3489}
+.refresh-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:.5rem}
+.refresh-btn{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:12px;color:var(--color-text-secondary);cursor:pointer}
+.time-label{font-size:11px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="dash">
+<div class="topbar">
+  <div>
+    <div class="topbar-title"><span class="live-dot"></span>Supervision réseau mobile</div>
+    <div class="topbar-sub" id="ts-label">Chargement...</div>
+  </div>
+  <button class="refresh-btn" onclick="refresh()">Actualiser</button>
+</div>
+
+<div class="filters">
+  <span style="font-size:12px;color:var(--color-text-secondary);align-self:center;margin-right:4px">Technologie :</span>
+  <button class="filter-btn active" onclick="setFilter('ALL',this)">Toutes</button>
+  <button class="filter-btn" onclick="setFilter('2G',this)">2G</button>
+  <button class="filter-btn" onclick="setFilter('3G',this)">3G</button>
+  <button class="filter-btn" onclick="setFilter('4G',this)">4G</button>
+  <button class="filter-btn" onclick="setFilter('5G',this)">5G</button>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="kpi-label">Débit moyen</div><div class="kpi-value" id="kpi-dl">—</div><div class="kpi-sub">Mbps</div></div>
+  <div class="kpi"><div class="kpi-label">Latence moy.</div><div class="kpi-value" id="kpi-lat">—</div><div class="kpi-sub">ms</div></div>
+  <div class="kpi"><div class="kpi-label">Taux alerte</div><div class="kpi-value" id="kpi-alert">—</div><div class="kpi-sub">des mesures</div></div>
+  <div class="kpi"><div class="kpi-label">Mesures total</div><div class="kpi-value" id="kpi-total">—</div><div class="kpi-sub">lignes</div></div>
+</div>
+
+<div class="charts-row">
+  <div class="chart-card">
+    <div class="chart-title">Débit moyen par technologie</div>
+    <div class="legend" id="legend-bar"></div>
+    <div style="position:relative;height:180px"><canvas id="barChart" role="img" aria-label="Débit moyen par technologie réseau"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Répartition des mesures</div>
+    <div class="legend" id="legend-pie"></div>
+    <div style="position:relative;height:180px"><canvas id="pieChart" role="img" aria-label="Répartition des mesures par technologie"></canvas></div>
+  </div>
+</div>
+
+<div class="chart-card-full">
+  <div class="chart-title">Évolution du débit dans le temps</div>
+  <div class="legend" id="legend-line"></div>
+  <div style="position:relative;height:200px"><canvas id="lineChart" role="img" aria-label="Évolution du débit par technologie dans le temps"></canvas></div>
+</div>
+
+<div class="chart-card-full">
+  <div class="chart-title">Dernières mesures — alertes</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Heure</th><th>Technologie</th><th>Opérateur</th><th>Débit (Mbps)</th><th>Latence (ms)</th><th>Statut</th></tr></thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const TECH_CFG = {
+  "2G":{dl:[0.05,0.25],lat:[350,600],color:"#BA7517",bg:"#FAEEDA"},
+  "3G":{dl:[1,10],lat:[80,200],color:"#185FA5",bg:"#E6F1FB"},
+  "4G":{dl:[10,150],lat:[20,60],color:"#3B6D11",bg:"#EAF3DE"},
+  "5G":{dl:[100,500],lat:[5,30],color:"#534AB7",bg:"#EEEDFE"}
+};
+const OPS=["Orange","Free","Bouygues","SFR"];
+const SEUILS={"2G":0.1,"3G":1,"4G":10,"5G":50};
+let allData=[];
+let activeFilter="ALL";
+let barChart,pieChart,lineChart;
+
+function rnd(a,b){return +(a+(b-a)*Math.random()).toFixed(2)}
+function genRow(){
+  const techs=["2G","3G","4G","5G"];
+  const wts=[0.04,0.11,0.60,0.25];
+  let r=Math.random(),cum=0,tech="4G";
+  for(let i=0;i<techs.length;i++){cum+=wts[i];if(r<cum){tech=techs[i];break;}}
+  const c=TECH_CFG[tech];
+  const dl=rnd(c.dl[0],c.dl[1]);
+  const lat=rnd(c.lat[0],c.lat[1]);
+  const now=new Date();
+  return{ts:now,time:now.toLocaleTimeString("fr-FR"),tech,op:OPS[Math.floor(Math.random()*4)],dl,lat,alert:dl<SEUILS[tech]?"Alerte":"Normal"};
+}
+function seed(){
+  const now=new Date();
+  for(let i=480;i>=0;i--){
+    const ts=new Date(now-i*180000);
+    const r=genRow();r.ts=ts;r.time=ts.toLocaleTimeString("fr-FR");
+    allData.push(r);
+  }
+}
+function filtered(){return activeFilter==="ALL"?allData:allData.filter(d=>d.tech===activeFilter)}
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  updateAll();
+}
+function updateKPIs(){
+  const d=filtered();
+  const avgDl=d.reduce((s,r)=>s+r.dl,0)/d.length;
+  const avgLat=d.reduce((s,r)=>s+r.lat,0)/d.length;
+  const alertRate=d.filter(r=>r.alert==="Alerte").length/d.length*100;
+  document.getElementById("kpi-dl").textContent=avgDl.toFixed(1);
+  document.getElementById("kpi-lat").textContent=Math.round(avgLat);
+  const aEl=document.getElementById("kpi-alert");
+  aEl.textContent=alertRate.toFixed(1)+"%";
+  aEl.className="kpi-value "+(alertRate>15?"danger":"success");
+  document.getElementById("kpi-total").textContent=d.length.toLocaleString("fr-FR");
+  document.getElementById("ts-label").textContent="Mise à jour : "+new Date().toLocaleTimeString("fr-FR");
+}
+function updateBar(){
+  const techs=["2G","3G","4G","5G"];
+  const avgs=techs.map(t=>{const rows=allData.filter(d=>d.tech===t);return rows.length?+(rows.reduce((s,r)=>s+r.dl,0)/rows.length).toFixed(1):0;});
+  const colors=techs.map(t=>TECH_CFG[t].color);
+  const leg=document.getElementById("legend-bar");
+  leg.innerHTML=techs.map((t,i)=>`<span class="legend-item"><span class="legend-dot" style="background:${colors[i]}"></span>${t} ${avgs[i]} Mbps</span>`).join("");
+  if(barChart){barChart.data.datasets[0].data=avgs;barChart.update();}
+  else{
+    barChart=new Chart(document.getElementById("barChart"),{
+      type:"bar",
+      data:{labels:techs,datasets:[{label:"Débit moyen",data:avgs,backgroundColor:colors,borderRadius:4,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+" Mbps"}}},scales:{y:{beginAtZero:true,grid:{color:"rgba(128,128,128,.1)"},ticks:{font:{size:10}},title:{display:true,text:"Mbps",font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11}}}}}
+    });
+  }
+}
+function updatePie(){
+  const techs=["2G","3G","4G","5G"];
+  const d=filtered();
+  const counts=techs.map(t=>d.filter(r=>r.tech===t).length);
+  const colors=techs.map(t=>TECH_CFG[t].color);
+  const total=counts.reduce((a,b)=>a+b,0)||1;
+  const leg=document.getElementById("legend-pie");
+  leg.innerHTML=techs.map((t,i)=>`<span class="legend-item"><span class="legend-dot" style="background:${colors[i]}"></span>${t} ${Math.round(counts[i]/total*100)}%</span>`).join("");
+  if(pieChart){pieChart.data.datasets[0].data=counts;pieChart.update();}
+  else{
+    pieChart=new Chart(document.getElementById("pieChart"),{
+      type:"doughnut",
+      data:{labels:techs,datasets:[{data:counts,backgroundColor:colors,borderWidth:2,borderColor:"var(--color-background-primary)"}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:"65%",plugins:{legend:{display:false}}}
+    });
+  }
+}
+function updateLine(){
+  const d=filtered();
+  const recent=d.slice(-60);
+  const labels=recent.map(r=>r.time);
+  const techs=activeFilter==="ALL"?["4G","5G","3G","2G"]:[activeFilter];
+  const datasets=techs.map(t=>({
+    label:t,
+    data:recent.map(r=>r.tech===t?r.dl:null),
+    borderColor:TECH_CFG[t].color,
+    backgroundColor:TECH_CFG[t].bg+"60",
+    spanGaps:false,
+    tension:.35,
+    pointRadius:0,
+    borderWidth:2,
+    fill:false,
+    borderDash:t==="2G"?[4,4]:t==="3G"?[2,2]:[]
+  }));
+  const leg=document.getElementById("legend-line");
+  leg.innerHTML=techs.map(t=>`<span class="legend-item"><span class="legend-dot" style="background:${TECH_CFG[t].color}"></span>${t}</span>`).join("");
+  if(lineChart){lineChart.data.labels=labels;lineChart.data.datasets=datasets;lineChart.update();}
+  else{
+    lineChart=new Chart(document.getElementById("lineChart"),{
+      type:"line",
+      data:{labels,datasets},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:"rgba(128,128,128,.1)"},ticks:{font:{size:10}},title:{display:true,text:"Mbps",font:{size:10}}},x:{grid:{display:false},ticks:{maxTicksLimit:8,font:{size:10}}}}}
+    });
+  }
+}
+function updateTable(){
+  const d=filtered().slice(-15).reverse();
+  const tb=document.getElementById("tbl-body");
+  tb.innerHTML=d.map(r=>`<tr>
+    <td>${r.time}</td>
+    <td><span class="badge-tech t${r.tech}">${r.tech}</span></td>
+    <td>${r.op}</td>
+    <td>${r.dl.toFixed(1)}</td>
+    <td>${Math.round(r.lat)}</td>
+    <td><span class="badge ${r.alert==="Alerte"?"badge-alert":"badge-ok"}">${r.alert==="Alerte"?"Alerte":"Normal"}</span></td>
+  </tr>`).join("");
+}
+function updateAll(){updateKPIs();updateBar();updatePie();updateLine();updateTable();}
+function refresh(){
+  for(let i=0;i<5;i++)allData.push(genRow());
+  updateAll();
+}
+
+seed();
+updateAll();
+setInterval(()=>{allData.push(genRow());updateAll();},8000);
+</script>
