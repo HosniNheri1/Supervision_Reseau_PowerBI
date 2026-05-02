@@ -55,6 +55,7 @@ Projet réalisé dans le cadre du module Réseaux Mobiles sous l’encadrement d
 Données fournies par l’ARCEP (data.arcep.fr) – licence Open Data.
 
 📄 Licence
+
 Ce projet est distribué sous la licence MIT.
 Vous pouvez librement utiliser, modifier et distribuer ce code à des fins personnelles ou commerciales, sous réserve de conserver la mention de l’auteur original.
 
