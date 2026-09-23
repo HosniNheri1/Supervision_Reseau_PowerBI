@@ -85,3 +85,6 @@ SOFTWARE.
 ⭐ Un dashboard simple, open source, et entièrement basé sur des données publiques.
 
 📸 Aperçu du dashboard :https://github.com/HosniNheri1/Supervision_Reseau_PowerBI/blob/main/dashboard.png
+
+📡 Dashboard en direct (2G/3G/4G/5G) :https://hosninheri1.github.io/Supervision_Reseau_PowerBI/supervision_reseau_2g_3g_4g_5g_dashboard.html
+![Aperçu du dashboard réseau](dashboard_reseau_live.png)
