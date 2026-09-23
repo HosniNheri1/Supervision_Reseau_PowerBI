@@ -54,12 +54,21 @@ Projet réalisé dans le cadre du module Réseaux Mobiles sous l’encadrement d
 🙏 Remerciements
 Données fournies par l’ARCEP (data.arcep.fr) – licence Open Data.
 
+
+
+⭐ Un dashboard simple, open source, et entièrement basé sur des données publiques.
+
+📸 Aperçu du dashboard :https://github.com/HosniNheri1/Supervision_Reseau_PowerBI/blob/main/dashboard.png
+
+📡 Dashboard en direct (2G/3G/4G/5G) :https://hosninheri1.github.io/Supervision_Reseau_PowerBI/supervision_reseau_2g_3g_4g_5g_dashboard.html
+![Aperçu du dashboard réseau](dashboard_reseau_live.png)
+
 📄 Licence
 
 Ce projet est distribué sous la licence MIT.
 Vous pouvez librement utiliser, modifier et distribuer ce code à des fins personnelles ou commerciales, sous réserve de conserver la mention de l’auteur original.
 
-text
+Text
 MIT License
 
 Copyright (c) 2025 Hosni Nheri
@@ -81,10 +90,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-⭐ Un dashboard simple, open source, et entièrement basé sur des données publiques.
-
-📸 Aperçu du dashboard :https://github.com/HosniNheri1/Supervision_Reseau_PowerBI/blob/main/dashboard.png
-
-📡 Dashboard en direct (2G/3G/4G/5G) :https://hosninheri1.github.io/Supervision_Reseau_PowerBI/supervision_reseau_2g_3g_4g_5g_dashboard.html
-![Aperçu du dashboard réseau](dashboard_reseau_live.png)
